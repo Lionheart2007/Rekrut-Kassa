@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Rekrut Kassa</string>
+    <string name="newItem">New</string>
+    <string name="inventory">Inventory</string>
+    <string name="options">Options</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_new_detail">NewDetailActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="newDescription">Enter a new Order</string>
+    <string name="inventoryDescription">Have a look at your inventory!</string>
+    <string name="optionsDescription">Adjust your register!</string>
+</resources>

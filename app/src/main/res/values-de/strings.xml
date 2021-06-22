@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rekrut Kassa</string>
+    <string name="newItem">Neu</string>
+    <string name="inventory">Inventar</string>
+    <string name="options">Optionen</string>
+    <string name="newDescription">Enter a new Order</string>
+    <string name="inventoryDescription">Have a look at your inventory!</string>
+    <string name="optionsDescription">Adjust your register!</string>
+</resources>
