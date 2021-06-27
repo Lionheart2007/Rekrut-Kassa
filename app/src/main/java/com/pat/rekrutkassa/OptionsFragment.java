@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.google.android.material.card.MaterialCardView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,9 +85,9 @@ public class OptionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_options_view,container,false);
 
-        LinearLayout mNewOption = rootView.findViewById(R.id.newOrder);
-        LinearLayout mInventoryOption = rootView.findViewById(R.id.inventory);
-        LinearLayout mOptionsOption = rootView.findViewById(R.id.options);
+        MaterialCardView mNewOption = rootView.findViewById(R.id.newOrder);
+        CardView mInventoryOption = rootView.findViewById(R.id.inventory);
+        CardView mOptionsOption = rootView.findViewById(R.id.options);
 
         mNewOption.setOnClickListener(new View.OnClickListener() {
             @Override

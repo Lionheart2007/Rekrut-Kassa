@@ -6,13 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     tools:context=".MainActivity">
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="1"
+        android:paddingTop="20dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         tools:context=".MainActivity"/>
 
     <View
@@ -23,7 +28,7 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="7"
+        android:layout_weight="6"
         android:id="@+id/detailContainer"
         tools:context=".MainActivity"/>
 

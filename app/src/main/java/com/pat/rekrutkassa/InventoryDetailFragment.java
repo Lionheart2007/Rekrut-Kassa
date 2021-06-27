@@ -7,6 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +64,14 @@ public class InventoryDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_inventory_detail,container,false);
+        ListView categoryList = rootView.findViewById(R.id.categoryList);
+        ArrayList<Category> categories = new ArrayList<>();
+        categories.add(new Category());
+        categories.add(new Category());
+        categories.add(new Category());
+        categories.add(new Category());
+        CategoryAdapter categoryAdapter = new CategoryAdapter(getContext(),R.layout.square_category,categories);
+        categoryList.setAdapter(categoryAdapter);
         return rootView;
     }
 }

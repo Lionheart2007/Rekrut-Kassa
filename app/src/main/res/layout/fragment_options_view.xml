@@ -1,94 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/newOrder"
-            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        >
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/newOrder"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:clickable="true"
+        android:elevation="0dp"
+        android:foreground="?selectableItemBackground"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/inventory"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/black"
+        app:contentPadding="20dp"
+        app:strokeWidth="1px">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="16dp">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@mipmap/ic_launcher"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/newItem"
-                android:textSize="20dp">
-            </TextView>
-        </LinearLayout>
+            android:layout_gravity="center"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:background="@android:color/transparent"
+            android:text="@string/newItem"
+            android:gravity="center_horizontal"
+            android:breakStrategy="balanced"/>
+    </com.google.android.material.card.MaterialCardView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@android:color/darker_gray" />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/inventory"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@id/options"
+        android:elevation="0dp"
+        app:contentPadding="20dp"
+        android:foreground="?selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newOrder"
+        app:strokeColor="@color/black"
+        app:strokeWidth="1px">
 
-        <LinearLayout
-            android:id="@+id/inventory"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="16dp">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@mipmap/ic_launcher"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/inventory"
-                android:textSize="20dp">
-            </TextView>
-        </LinearLayout>
+            android:layout_gravity="center"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:background="@android:color/transparent"
+            android:text="@string/inventory"
+            android:gravity="center_horizontal"
+            android:breakStrategy="balanced"/>
+    </com.google.android.material.card.MaterialCardView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@android:color/darker_gray" />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/options"
+        android:layout_margin="20dp"
+        app:contentPadding="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inventory"
+        app:strokeWidth="1px"
+        app:strokeColor="@color/black"
+        android:elevation="0dp"
+        app:layout_constraintDimensionRatio="1"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true">
 
-        <LinearLayout
-            android:id="@+id/options"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="16dp">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@mipmap/ic_launcher"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/options"
-                android:textSize="20dp">
-            </TextView>
-        </LinearLayout>
+            android:layout_gravity="center"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:background="@android:color/transparent"
+            android:text="@string/options"
+            android:gravity="center_horizontal"
+            android:breakStrategy="balanced"/>
+    </com.google.android.material.card.MaterialCardView>
         
-    </LinearLayout>
-</ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
