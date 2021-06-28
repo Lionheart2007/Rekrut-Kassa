@@ -69,7 +69,7 @@ public class InventoryDetailFragment extends Fragment {
         categories.add(new Category());
         categories.add(new Category());
         categories.add(new Category());
-        categories.add(new Category());
+        categories.add(null);
         CategoryAdapter categoryAdapter = new CategoryAdapter(getContext(),R.layout.square_category,categories);
         categoryList.setAdapter(categoryAdapter);
         return rootView;

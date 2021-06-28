@@ -6,8 +6,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ListView
+        android:paddingTop="20dp"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
         android:id="@+id/categoryList"
         android:layout_width="0dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="20dp"
         android:layout_weight="1"
         android:layout_height="wrap_content">
 

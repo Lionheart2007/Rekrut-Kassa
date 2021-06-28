@@ -42,4 +42,6 @@ public class Category extends Saveable {
 
         return serializedCategory;
     }
+
+    public String getmTitle() { return mTitle; }
 }
