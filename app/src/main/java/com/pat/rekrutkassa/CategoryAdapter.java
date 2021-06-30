@@ -72,7 +72,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // TODO: ACTUALLY SAVE INPUT
-                                    new SaveManager<Category>().save();
+                                    //new SaveManager<Category>().save();
                                 }
                             }).create();
                     newCatDialog.show();
