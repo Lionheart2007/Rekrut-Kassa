@@ -6,7 +6,6 @@ import org.json.JSONObject;
 public class Category extends Saveable {
     private String mTitle;
 
-
     public Category(String title, Integer id){
         this.mTypeId = 0;
         this.mTitle = title;
@@ -30,6 +29,7 @@ public class Category extends Saveable {
 
     }
 
+
     @Override
     JSONObject serialize() {
         JSONObject serializedCategory = new JSONObject();
@@ -44,4 +44,9 @@ public class Category extends Saveable {
     }
 
     public String getmTitle() { return mTitle; }
+
+    @Override
+    public void setmId(Integer mId) {
+        super.setmId(mId);
+    }
 }

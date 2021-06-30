@@ -65,11 +65,14 @@ public class InventoryDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_inventory_detail,container,false);
         ListView categoryList = rootView.findViewById(R.id.categoryList);
-        ArrayList<Category> categories = new ArrayList<>();
-        categories.add(new Category());
-        categories.add(new Category());
-        categories.add(new Category());
+
+        SaveManager<Category> categorySaveManager = new SaveManager<>(getContext(),"categories",Category.class);
+
+        ArrayList<Category> categories = categorySaveManager.getSaveList();
         categories.add(null);
+
+
+
         CategoryAdapter categoryAdapter = new CategoryAdapter(getContext(),R.layout.square_category,categories);
         categoryList.setAdapter(categoryAdapter);
         return rootView;

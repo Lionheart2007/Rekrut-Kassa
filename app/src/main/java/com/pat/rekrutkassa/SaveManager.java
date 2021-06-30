@@ -3,56 +3,162 @@ package com.pat.rekrutkassa;
 import android.content.Context;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import android.util.Log;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import androidx.fragment.app.FragmentManager;
 
 public class SaveManager<T extends Saveable>{
     Context mContext;
     String mSrc;
     File mFile;
+    final Class<T> typeParameterClass;
+
     private String LOG_TAG = "SAVEMANAGER";
 
-    public SaveManager(Context context, String src){
+    public SaveManager(Context context, String src, Class<T> typeParameterClass){
         this.mContext = context;
         this.mSrc = src;
+        this.typeParameterClass = typeParameterClass;
         this.mFile = new File(mContext.getFilesDir(),mSrc+".json");
     }
 
-    public void editSaveable(){
-
+    public void editSaveable(int id, T saveable){
+        saveable.setmId(id);
+        try {
+            JSONArray save = new JSONArray(readSave());
+            save.put(id-1,saveable.serialize());
+            writeSaveFile(save);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void deleteSaveable(){
-
+    public void deleteSaveable(int id){
+        JSONArray save = null;
+        try{
+            save = new JSONArray(readSave());
+            save.remove(id-1);
+            save = reassignID(save);
+            writeSaveFile(save);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    private JSONArray reassignID(){
+    private JSONArray reassignID(JSONArray save){
+        for(int i = 0; i < save.length(); i++){
+            JSONObject saveableJson = null;
+            try{
+                saveableJson = save.getJSONObject(i);
+                T saveable = typeParameterClass.newInstance();
+                saveable.createSaveable(saveableJson);
+                saveable.setmId(i+1);
+                save.put(i,saveable.serialize());
 
-        // TODO: ADD RETURN STATEMENT
-        return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+        return save;
     }
 
-    public void save(){
+    public ArrayList<T> getSaveList(){
+        ArrayList<T> saveList = new ArrayList<>();
+        try {
+            JSONArray save = new JSONArray(readSave());
+            T saveable;
+            for(int i = 0; i < save.length(); i++){
+                saveable = null;
+                saveable = typeParameterClass.newInstance();
+                saveable.createSaveable(save.getJSONObject(i));
+                saveList.add(saveable);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
 
+        return saveList;
+    }
+    public void save(T saveable) {
+        saveable.setmId(getLastId());
+        JSONArray save;
+
+
+        try {
+            if (mFile.length() == 0) {
+                save = new JSONArray();
+            } else {
+                save = new JSONArray(readSave());
+            }
+
+            save.put(saveable.serialize());
+
+            writeSaveFile(save);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(LOG_TAG,"Couldn't save saveable");
+
+        }
     }
 
-    public T getSaveablyById(){
+    public int getCount(){
+        int count = -1;
+        try {
+            JSONArray save = new JSONArray(readSave());
+            count = save.length();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        // TODO: ADD RETURN STATEMENT
-        return null;
+        return  count;
+    }
+
+    public T getSaveablyById(int id){
+        JSONArray save = null;
+        T saveable = null;
+        try {
+            save = new JSONArray(readSave());
+            saveable = typeParameterClass.newInstance();
+            saveable.createSaveable(save.getJSONObject(id-1));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        return saveable;
     }
 
     private int getLastId(){
-
-        // TODO: ADD RETURN STATEMENT
-        return 0;
+        int id = 0;
+        JSONArray save;
+        try {
+            save = new JSONArray(readSave());
+            id = save.length()-1;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 
     public String readSave(){
@@ -71,10 +177,16 @@ public class SaveManager<T extends Saveable>{
         return contents;
     }
 
-    public ArrayList<T> getSave(){
-
-        // TODO: ADD RETURN STATEMENT
-        return null;
+    private JSONArray getSave(){
+        JSONArray save = null;
+        try{
+            if(!(mFile.length() == 0)){
+                save = new JSONArray(readSave());
+            }
+        }catch (JSONException e){
+            Log.e(LOG_TAG,"Failed getting save");
+        }
+        return getSave();
     }
 
     public void clearSave(){
@@ -99,5 +211,22 @@ public class SaveManager<T extends Saveable>{
             Log.e(LOG_TAG,"File creation failed "+mSrc);
         }
 
+    }
+
+    private T getInstanceOfT(Class<T> aClass) throws InstantiationException, IllegalAccessException {
+        return aClass.newInstance();
+    }
+
+    private void writeSaveFile(JSONArray save){
+        try{
+            FileOutputStream fos = new FileOutputStream(mFile, false);
+            fos.write((save.toString()).getBytes());
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

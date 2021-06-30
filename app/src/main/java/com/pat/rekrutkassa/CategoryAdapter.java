@@ -43,10 +43,6 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         super(context, resource, textViewResourceId, objects);
     }
 
-    @Override
-    public int getCount() {
-        return super.getCount();
-    }
 
     @NonNull
     @Override
@@ -71,8 +67,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                             .setNeutralButton("Submit", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // TODO: ACTUALLY SAVE INPUT
-                                    //new SaveManager<Category>().save();
+                                    SaveManager<Category> categorySaveManager = new SaveManager<>(getContext(),"categories",Category.class);
+                                    categorySaveManager.save(new Category(inputCat.getText().toString(),null));
                                 }
                             }).create();
                     newCatDialog.show();
@@ -85,6 +81,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                 @Override
                 public void onClick(View v) {
                     // TODO: ACTUALLY WRITE ONCLICK FOR NON-ADDING BUTTONS
+                    // TODO: ADD DELETE ON LONG CLICK FUNCTION
                 }
             });
         }

@@ -75,4 +75,9 @@ public class Item extends Saveable {
         }
         return serializedItem;
     }
+
+    @Override
+    public void setmId(Integer mId) {
+        super.setmId(mId);
+    }
 }

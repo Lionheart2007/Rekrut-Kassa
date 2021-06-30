@@ -8,4 +8,8 @@ abstract class Saveable {
 
     abstract void createSaveable(JSONObject json);
     abstract JSONObject serialize();
+
+    public void setmId(Integer mId) {
+        this.mId = mId;
+    }
 }
