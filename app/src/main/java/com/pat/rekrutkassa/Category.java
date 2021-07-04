@@ -12,6 +12,13 @@ public class Category extends Saveable {
         this.mId = id;
     }
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "mTitle='" + mTitle + '\'' +
+                '}';
+    }
+
     public Category(){
 
     }

@@ -1,5 +1,7 @@
 package com.pat.rekrutkassa;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,15 +9,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 public class Item extends Saveable {
     private String mTitle;
     private boolean mUsesFloats;
     private Integer mQuantity;
     private Integer mDecimalPlaces;
+    private final String LOG_TAG = "Item.class";
 
 
 
-    public Item(String title, int id, int quantity) {
+    public Item(String title, Integer id, int quantity) {
         this.mTypeId = 1;
         this.mTitle = title;
         this.mId = id;
@@ -40,17 +45,28 @@ public class Item extends Saveable {
 
     }
 
+
+    @NonNull
+    @Override
+    public String toString() {
+        return mId + " " + mTitle + " " + mQuantity;
+    }
+
     @Override
     void createSaveable(JSONObject json) {
         this.mTypeId = 1;
         try {
-            this.mId = json.getInt("id");
+
             this.mTitle = json.getString("title");
             this.mUsesFloats = json.getBoolean("usesFloats");
             this.mQuantity = json.getInt("quantity");
             if(mUsesFloats){
                 this.mDecimalPlaces = json.getInt("decimalPlaces");
             }
+
+            //Always put ID last here: In the probable case that it doesn't have one - like right after saving -
+            //it won't instantiate empty Item objects.
+            this.mId = json.getInt("id");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -79,5 +95,13 @@ public class Item extends Saveable {
     @Override
     public void setmId(Integer mId) {
         super.setmId(mId);
+    }
+
+    public String getmTitle() {
+        return mTitle;
+    }
+
+    public Integer getmQuantity() {
+        return mQuantity;
     }
 }

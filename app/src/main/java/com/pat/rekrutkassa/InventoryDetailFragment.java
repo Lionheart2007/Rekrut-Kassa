@@ -1,14 +1,24 @@
 package com.pat.rekrutkassa;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +34,7 @@ public class InventoryDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final String LOG_TAG = "InventoryDetailFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,16 +75,17 @@ public class InventoryDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_inventory_detail,container,false);
+
+
+
+        GridView grid = rootView.findViewById(R.id.container_items);
+
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(null);
+
+
         ListView categoryList = rootView.findViewById(R.id.categoryList);
-
-        SaveManager<Category> categorySaveManager = new SaveManager<>(getContext(),"categories",Category.class);
-
-        ArrayList<Category> categories = categorySaveManager.getSaveList();
-        categories.add(null);
-
-
-
-        CategoryAdapter categoryAdapter = new CategoryAdapter(getContext(),R.layout.square_category,categories);
+        CategoryAdapter categoryAdapter = new CategoryAdapter(getContext(),R.layout.square_category,new SaveManager<Category>(getContext(),"categories",Category.class),grid);
         categoryList.setAdapter(categoryAdapter);
         return rootView;
     }

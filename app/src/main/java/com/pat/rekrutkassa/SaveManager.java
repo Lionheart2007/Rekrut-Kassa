@@ -58,8 +58,10 @@ public class SaveManager<T extends Saveable>{
             JSONObject saveableJson = null;
             try{
                 saveableJson = save.getJSONObject(i);
+
                 T saveable = typeParameterClass.newInstance();
                 saveable.createSaveable(saveableJson);
+                Log.e("REASSIGN ID", saveable.toString());
                 saveable.setmId(i+1);
                 save.put(i,saveable.serialize());
 
@@ -71,6 +73,7 @@ public class SaveManager<T extends Saveable>{
                 e.printStackTrace();
             }
         }
+        Log.e("REASSIGN ID",save.toString());
         return save;
     }
 
@@ -84,6 +87,11 @@ public class SaveManager<T extends Saveable>{
                 saveable = typeParameterClass.newInstance();
                 saveable.createSaveable(save.getJSONObject(i));
                 saveList.add(saveable);
+
+                if(saveable.mTypeId == 1){
+                    Log.e(LOG_TAG,save.getJSONObject(i).toString());
+                }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -96,9 +104,13 @@ public class SaveManager<T extends Saveable>{
         return saveList;
     }
     public void save(T saveable) {
-        saveable.setmId(getLastId());
         JSONArray save;
 
+        try{
+            Log.e(LOG_TAG,((Item) saveable).getmTitle());
+        }catch (ClassCastException e){
+
+        }
 
         try {
             if (mFile.length() == 0) {
@@ -106,8 +118,9 @@ public class SaveManager<T extends Saveable>{
             } else {
                 save = new JSONArray(readSave());
             }
-
             save.put(saveable.serialize());
+            Log.e("save", save.toString());
+            save = reassignID(save);
 
             writeSaveFile(save);
 
@@ -169,11 +182,13 @@ public class SaveManager<T extends Saveable>{
             fis.read(bytes);
             fis.close();
             Log.e(LOG_TAG,"Reading save successful "+mSrc);
+
         }
         catch (IOException e){
             Log.e(LOG_TAG,"Reading save failed "+mSrc);
         }
         String contents = new String(bytes);
+        Log.e(LOG_TAG,contents);
         return contents;
     }
 
