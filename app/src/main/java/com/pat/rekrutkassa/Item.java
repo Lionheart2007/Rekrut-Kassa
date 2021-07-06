@@ -13,32 +13,22 @@ import androidx.annotation.NonNull;
 
 public class Item extends Saveable {
     private String mTitle;
-    private boolean mUsesFloats;
-    private Integer mQuantity;
-    private Integer mDecimalPlaces;
+    private Float mQuantity;
+    private Float mPrice;
+    private boolean mHasEqualSizedPortions;
+    private boolean mNeedsMeasuring;
+    private String mUnit;
     private final String LOG_TAG = "Item.class";
 
-
-
-    public Item(String title, Integer id, int quantity) {
+    public Item(String title, Integer id, float quantity, float price, boolean hasEqualSizedPortions, boolean needsMeasuring, String unit) {
         this.mTypeId = 1;
         this.mTitle = title;
         this.mId = id;
-        this.mQuantity = quantity;
-        this.mUsesFloats = false;
-    }
-
-    public Item(String title, int id, float quantity) {
-        this.mTypeId = 1;
-        this.mTitle = title;
-        this.mId = id;
-
-        quantity = (float) (Math.round(quantity*100.0)/100.0);
-
-        this.mQuantity = Integer.valueOf(String.valueOf(quantity).split("\\.")[0]);
-        this.mDecimalPlaces = Integer.valueOf(String.valueOf(quantity).split("\\.")[1]);
-
-        mUsesFloats = true;
+        this.mQuantity = (float) (Math.round(quantity*100.0)/100.0);
+        this.mUnit = unit;
+        this.mPrice = (float) (Math.round(price*100.0)/100.0);;
+        this.mHasEqualSizedPortions = hasEqualSizedPortions;
+        this.mNeedsMeasuring = needsMeasuring;
     }
 
     public Item() {
@@ -58,12 +48,11 @@ public class Item extends Saveable {
         try {
 
             this.mTitle = json.getString("title");
-            this.mUsesFloats = json.getBoolean("usesFloats");
-            this.mQuantity = json.getInt("quantity");
-            if(mUsesFloats){
-                this.mDecimalPlaces = json.getInt("decimalPlaces");
-            }
-
+            this.mQuantity = Float.parseFloat(json.getString("quantity"));
+            this.mPrice = Float.parseFloat(json.getString("price"));
+            this.mHasEqualSizedPortions = json.getBoolean("hasEqualSizedPortions");
+            this.mNeedsMeasuring = json.getBoolean("needsMeasuring");
+            this.mUnit = json.getString("unit");
             //Always put ID last here: In the probable case that it doesn't have one - like right after saving -
             //it won't instantiate empty Item objects.
             this.mId = json.getInt("id");
@@ -81,11 +70,11 @@ public class Item extends Saveable {
         try {
             serializedItem.put("id",this.mId);
             serializedItem.put("title",this.mTitle);
-            serializedItem.put("usesFloats",this.mUsesFloats);
-            serializedItem.put("quantity",this.mQuantity);
-            if(mUsesFloats){
-                serializedItem.put("decimalPlaces",this.mDecimalPlaces);
-            }
+            serializedItem.put("quantity",String.valueOf(this.mQuantity));
+            serializedItem.put("price",String.valueOf(this.mPrice));
+            serializedItem.put("hasEqualSizedPortions",this.mHasEqualSizedPortions);
+            serializedItem.put("needsMeasuring",this.mNeedsMeasuring);
+            serializedItem.put("unit",this.mUnit);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,7 +90,15 @@ public class Item extends Saveable {
         return mTitle;
     }
 
-    public Integer getmQuantity() {
+    public Float getmQuantity() {
         return mQuantity;
+    }
+
+    public String getmUnit() {
+        return mUnit;
+    }
+
+    public Float getmPrice() {
+        return mPrice;
     }
 }
