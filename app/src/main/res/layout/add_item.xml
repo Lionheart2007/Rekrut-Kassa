@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Portion Size"
-            android:inputType="textPersonName"
+            android:inputType="numberDecimal"
             app:layout_constraintStart_toStartOf="@+id/equal_sized_portions"
             app:layout_constraintTop_toTopOf="@+id/item_quantity" />
 
@@ -47,6 +47,7 @@
             android:layout_height="47dp"
             android:layout_below="@+id/item_title"
             android:hint="Stored Quantity"
+            android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="@+id/item_title"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,8 +66,8 @@
             android:layout_width="172dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Price"
             android:inputType="numberDecimal"
+            android:hint="Price"
             app:layout_constraintStart_toStartOf="@+id/item_quantity"
             app:layout_constraintTop_toBottomOf="@+id/item_quantity" />
 

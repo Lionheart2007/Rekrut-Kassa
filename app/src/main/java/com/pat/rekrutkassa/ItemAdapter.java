@@ -65,19 +65,11 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItemView = convertView;
 
-        if (listItemView == null){
-            listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.square_item, parent, false);
-
-        }
-
         Item currentItem = getItem(position);
 
         if(currentItem == null){
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.square_item, parent,false);
-            ((TextView)listItemView.findViewById(R.id.itemText)).setText("+");
-            ((TextView)listItemView.findViewById(R.id.itemQuantity)).setVisibility(View.GONE);
-            ((TextView)listItemView.findViewById(R.id.itemUnit)).setVisibility(View.GONE);
+            listItemView = LayoutInflater.from(getContext()).inflate(
+                    R.layout.add_square, parent, false);
             listItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,13 +81,14 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                             .setNeutralButton("Submit", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Log.e(LOG_TAG, ((TextView) inputItem.findViewById(R.id.item_title)).getText().toString());
-                                    Log.e(LOG_TAG, ((TextView) inputItem.findViewById(R.id.item_quantity)).getText().toString());
+                                    //Log.e(LOG_TAG, ((TextView) inputItem.findViewById(R.id.item_title)).getText().toString());
+                                    //Log.e(LOG_TAG, ((TextView) inputItem.findViewById(R.id.item_quantity)).getText().toString());
 
                                     Item toSave = new Item(((TextView) inputItem.findViewById(R.id.item_title)).getText().toString(),
                                             null,
                                             Float.valueOf(((TextView) inputItem.findViewById(R.id.item_quantity)).getText().toString()),
                                             Float.valueOf(((TextView) inputItem.findViewById(R.id.item_price)).getText().toString()),
+                                            Float.valueOf(((TextView) inputItem.findViewById(R.id.portion_size)).getText().toString()),
                                             ((CheckBox) inputItem.findViewById(R.id.equal_sized_portions)).isChecked(),
                                             ((CheckBox) inputItem.findViewById(R.id.needs_measuring)).isChecked(),
                                             ((TextView) inputItem.findViewById(R.id.unit)).getText().toString());
@@ -115,11 +108,11 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             });
         }
         else{
+            listItemView = LayoutInflater.from(getContext()).inflate(
+                    R.layout.square_item, parent, false);
             ((TextView)listItemView.findViewById(R.id.itemText)).setText(currentItem.getmTitle());
             ((TextView)listItemView.findViewById(R.id.itemQuantity)).setText(String.valueOf(currentItem.getmQuantity()));
-            ((TextView)listItemView.findViewById(R.id.itemQuantity)).setVisibility(View.VISIBLE);
             ((TextView)listItemView.findViewById(R.id.itemUnit)).setText(currentItem.getmUnit());
-            ((TextView)listItemView.findViewById(R.id.itemUnit)).setVisibility(View.VISIBLE);
 
             listItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -137,11 +130,45 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                             .setNeutralButton("Submit", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // TODO: ACTUALLY IMPLEMENT OVERWRITING
+                                    Item newItem = new Item(
+                                            ((TextView)editView.findViewById(R.id.item_title)).getText().toString(),
+                                            currentItem.mId,
+                                            Float.valueOf(((TextView)editView.findViewById(R.id.item_quantity)).getText().toString()),
+                                            Float.valueOf(((TextView)editView.findViewById(R.id.item_price)).getText().toString()),
+                                            Float.valueOf(((TextView)editView.findViewById(R.id.portion_size)).getText().toString()),
+                                            currentItem.ismHasEqualSizedPortions(),
+                                            currentItem.ismNeedsMeasuring(),
+                                            currentItem.getmUnit()
+                                    );
+                                    saveManager.editSaveable(currentItem.mId,newItem);
+
+                                    ItemAdapter itemAdapter = (ItemAdapter) toPopulate.getAdapter();
+                                    itemAdapter.clear();
+                                    itemAdapter.addAll(saveManager.getSaveList());
+                                    itemAdapter.notifyDataSetChanged();
                                 }
                             })
                             .create();
                     editItemDialog.show();
+                }
+            });
+
+            listItemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog deleteItemDialog = new MaterialAlertDialogBuilder(getContext(), R.style.MyRounded_MaterialComponents_MaterialAlertDialog)
+                            .setMessage("Do you really want to delete "+currentItem.getmTitle() + "?")
+                            .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    saveManager.deleteSaveable(currentItem.mId);
+                                }
+                            })
+                            .create();
+                    deleteItemDialog.show();
+
+
+                    return true;
                 }
             });
         }

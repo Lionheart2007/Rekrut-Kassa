@@ -39,6 +39,8 @@ public class SaveManager<T extends Saveable>{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.e("ORDER_ REMOVE LATER",this.readSave());
     }
 
     public void deleteSaveable(int id){
@@ -206,7 +208,7 @@ public class SaveManager<T extends Saveable>{
 
     public void clearSave(){
         deleteSave();
-        clearSave();
+        createSave();
         Log.e(LOG_TAG,"Cleared "+mSrc);
     }
 

@@ -73,6 +73,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         }
         Category currentCategory = getItem(position);
         if (currentCategory == null){
+            listItemView = LayoutInflater.from(getContext()).inflate(
+                    R.layout.add_square, parent, false);
             ((TextView) listItemView.findViewById(R.id.itemText)).setText("+");
             listItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,6 +99,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
             });
         }
         else {
+            listItemView = LayoutInflater.from(getContext()).inflate(
+                    R.layout.square_category, parent, false);
             ((TextView) listItemView.findViewById(R.id.itemText)).setText(currentCategory.getmTitle());
             listItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,7 +116,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                 }
             });
 
-            listItemView.setOnLongClickListener(new View.OnLongClickListener() {
+            /*listItemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
 
@@ -138,9 +142,9 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                     deleteCatDialog.show();
 
 
-                    return true;
+                    return false;
                 }
-            });
+            });*/
         }
 
 

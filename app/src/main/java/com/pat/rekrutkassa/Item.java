@@ -18,9 +18,10 @@ public class Item extends Saveable {
     private boolean mHasEqualSizedPortions;
     private boolean mNeedsMeasuring;
     private String mUnit;
+    private Float mPortionSize;
     private final String LOG_TAG = "Item.class";
 
-    public Item(String title, Integer id, float quantity, float price, boolean hasEqualSizedPortions, boolean needsMeasuring, String unit) {
+    public Item(String title, Integer id, float quantity, float price, Float portionSize, boolean hasEqualSizedPortions, boolean needsMeasuring, String unit) {
         this.mTypeId = 1;
         this.mTitle = title;
         this.mId = id;
@@ -29,10 +30,21 @@ public class Item extends Saveable {
         this.mPrice = (float) (Math.round(price*100.0)/100.0);;
         this.mHasEqualSizedPortions = hasEqualSizedPortions;
         this.mNeedsMeasuring = needsMeasuring;
+
+        if (portionSize.equals(null)){
+            this.mPortionSize = -1f;
+        }
+        else{
+            this.mPortionSize = portionSize;
+        }
     }
 
     public Item() {
 
+    }
+
+    public Item(JSONObject json){
+        createSaveable(json);
     }
 
 
@@ -53,8 +65,9 @@ public class Item extends Saveable {
             this.mHasEqualSizedPortions = json.getBoolean("hasEqualSizedPortions");
             this.mNeedsMeasuring = json.getBoolean("needsMeasuring");
             this.mUnit = json.getString("unit");
+            this.mPortionSize = Float.parseFloat(json.getString("portionSize"));
             //Always put ID last here: In the probable case that it doesn't have one - like right after saving -
-            //it won't instantiate empty Item objects.
+            //it won't instantiate empty Item objects that way.
             this.mId = json.getInt("id");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -75,6 +88,7 @@ public class Item extends Saveable {
             serializedItem.put("hasEqualSizedPortions",this.mHasEqualSizedPortions);
             serializedItem.put("needsMeasuring",this.mNeedsMeasuring);
             serializedItem.put("unit",this.mUnit);
+            serializedItem.put("portionSize",String.valueOf(this.mPortionSize));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -100,5 +114,58 @@ public class Item extends Saveable {
 
     public Float getmPrice() {
         return mPrice;
+    }
+
+    public boolean ismHasEqualSizedPortions() {
+        return mHasEqualSizedPortions;
+    }
+
+    public boolean ismNeedsMeasuring() {
+        return mNeedsMeasuring;
+    }
+
+    public Float getmPortionSize() {
+        return mPortionSize;
+    }
+
+    public boolean equals(Item item){
+
+
+        if(!this.mTitle.equals(item.getmTitle())){
+            Log.e(LOG_TAG,"title");
+            return false;
+        }
+
+        if(!(0 == this.mQuantity.compareTo(item.getmQuantity()))){
+            Log.e(LOG_TAG,"qua");
+            return false;
+        }
+
+        if(!(0 == this.mPrice.compareTo(item.getmPrice()))){
+            Log.e(LOG_TAG,"pri");
+            return false;
+        }
+
+        if(!this.mUnit.equals(item.getmUnit())){
+            Log.e(LOG_TAG,"unit");
+            return false;
+        }
+
+        if(!(this.mHasEqualSizedPortions == item.ismHasEqualSizedPortions())){
+            Log.e(LOG_TAG,"boolequal");
+            return false;
+        }
+
+        if(!(this.mNeedsMeasuring == item.ismNeedsMeasuring())){
+            Log.e(LOG_TAG,"boolMeasure");
+            return false;
+        }
+
+        if(!(0 == this.mPortionSize.compareTo(item.getmPortionSize()))){
+            Log.e(LOG_TAG,"por");
+            return false;
+        }
+
+        return true;
     }
 }

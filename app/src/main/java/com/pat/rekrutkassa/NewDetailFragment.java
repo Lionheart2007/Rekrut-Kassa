@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +62,22 @@ public class NewDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView =inflater.inflate(R.layout.fragment_new_detail,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_new_detail,container,false);
+
+        GridView grid = rootView.findViewById(R.id.containerItems);
+
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(null);
+
+
+        ListView categoryList = rootView.findViewById(R.id.categoryList);
+
+        SaveManager<Order> currentOrder = new SaveManager<>(getContext(),"currentOrder",Order.class);
+        currentOrder.clearSave();
+
+
+        CategoryAdapterNewOrder categoryAdapter = new CategoryAdapterNewOrder(getContext(),R.layout.square_category,new SaveManager<Category>(getContext(),"categories",Category.class),grid,currentOrder);
+        categoryList.setAdapter(categoryAdapter);
         return rootView;
     }
 }
