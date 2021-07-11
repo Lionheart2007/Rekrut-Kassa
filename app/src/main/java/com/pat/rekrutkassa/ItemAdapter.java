@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.util.zip.Inflater;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -93,6 +91,8 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                                             ((CheckBox) inputItem.findViewById(R.id.needs_measuring)).isChecked(),
                                             ((TextView) inputItem.findViewById(R.id.unit)).getText().toString());
 
+                                    toSave.setmCategory(saveManager.getmSrc());
+
                                     Log.e(LOG_TAG,toSave.toString());
                                     saveManager.save(toSave);
                                     ItemAdapter itemAdapter = (ItemAdapter) toPopulate.getAdapter();
@@ -135,12 +135,14 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                                             currentItem.mId,
                                             Float.valueOf(((TextView)editView.findViewById(R.id.item_quantity)).getText().toString()),
                                             Float.valueOf(((TextView)editView.findViewById(R.id.item_price)).getText().toString()),
-                                            Float.valueOf(((TextView)editView.findViewById(R.id.portion_size)).getText().toString()),
+                                            currentItem.getmPortionSize(),
                                             currentItem.ismHasEqualSizedPortions(),
                                             currentItem.ismNeedsMeasuring(),
                                             currentItem.getmUnit()
                                     );
-                                    saveManager.editSaveable(currentItem.mId,newItem);
+
+                                    Log.e(LOG_TAG,newItem.mId+"");
+                                    saveManager.editSaveable(newItem.mId,newItem);
 
                                     ItemAdapter itemAdapter = (ItemAdapter) toPopulate.getAdapter();
                                     itemAdapter.clear();

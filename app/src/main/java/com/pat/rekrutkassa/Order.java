@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Order extends Saveable {
-    ArrayList<OrderElement> orderElements;
+    ArrayList<OrderElement> orderElements = new ArrayList<>();
     private final String LOG_TAG = "ORDER";
 
 
@@ -34,6 +34,10 @@ public class Order extends Saveable {
             }
         }
         orderElements.add(new OrderElement(1,item));
+    }
+
+    public ArrayList<OrderElement> getOrderElementsList(){
+        return orderElements;
     }
 
     private ArrayList<OrderElement> formOrderElements(ArrayList<Item> items){
@@ -106,7 +110,7 @@ public class Order extends Saveable {
 
 
 
-    private class OrderElement extends Saveable{
+    public class OrderElement extends Saveable{
         int count = 0;
         Item item;
         public OrderElement(int count, Item item){

@@ -116,7 +116,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                 }
             });
 
-            /*listItemView.setOnLongClickListener(new View.OnLongClickListener() {
+            listItemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
 
@@ -144,7 +144,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
                     return false;
                 }
-            });*/
+            });
         }
 
 

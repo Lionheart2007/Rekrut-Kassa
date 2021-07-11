@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class SaveManager<T extends Saveable>{
     Context mContext;
-    String mSrc;
+    private String mSrc;
     File mFile;
     final Class<T> typeParameterClass;
 
@@ -245,5 +245,9 @@ public class SaveManager<T extends Saveable>{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getmSrc() {
+        return mSrc;
     }
 }

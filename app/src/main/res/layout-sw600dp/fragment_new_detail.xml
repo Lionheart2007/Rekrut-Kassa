@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="Order"
+        android:text="Done"
+        android:id="@+id/submitButton"
         android:textAlignment="center"
         android:textColor="@color/white">
 

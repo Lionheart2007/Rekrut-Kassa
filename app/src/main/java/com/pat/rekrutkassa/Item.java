@@ -5,10 +5,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 
 public class Item extends Saveable {
@@ -20,6 +16,7 @@ public class Item extends Saveable {
     private String mUnit;
     private Float mPortionSize;
     private final String LOG_TAG = "Item.class";
+    private String mCategory ="";
 
     public Item(String title, Integer id, float quantity, float price, Float portionSize, boolean hasEqualSizedPortions, boolean needsMeasuring, String unit) {
         this.mTypeId = 1;
@@ -42,6 +39,8 @@ public class Item extends Saveable {
     public Item() {
 
     }
+
+
 
     public Item(JSONObject json){
         createSaveable(json);
@@ -66,6 +65,7 @@ public class Item extends Saveable {
             this.mNeedsMeasuring = json.getBoolean("needsMeasuring");
             this.mUnit = json.getString("unit");
             this.mPortionSize = Float.parseFloat(json.getString("portionSize"));
+            this.mCategory = json.getString("category");
             //Always put ID last here: In the probable case that it doesn't have one - like right after saving -
             //it won't instantiate empty Item objects that way.
             this.mId = json.getInt("id");
@@ -89,6 +89,7 @@ public class Item extends Saveable {
             serializedItem.put("needsMeasuring",this.mNeedsMeasuring);
             serializedItem.put("unit",this.mUnit);
             serializedItem.put("portionSize",String.valueOf(this.mPortionSize));
+            serializedItem.put("category",this.mCategory);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -106,6 +107,10 @@ public class Item extends Saveable {
 
     public Float getmQuantity() {
         return mQuantity;
+    }
+
+    public void setmQuantity(Float mQuantity) {
+        this.mQuantity = mQuantity;
     }
 
     public String getmUnit() {
@@ -126,6 +131,14 @@ public class Item extends Saveable {
 
     public Float getmPortionSize() {
         return mPortionSize;
+    }
+
+    public void setmCategory(String mCategory) {
+        this.mCategory = mCategory;
+    }
+
+    public String getmCategory() {
+        return mCategory;
     }
 
     public boolean equals(Item item){

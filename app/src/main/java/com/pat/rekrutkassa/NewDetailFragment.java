@@ -1,14 +1,22 @@
 package com.pat.rekrutkassa;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -76,8 +84,47 @@ public class NewDetailFragment extends Fragment {
         currentOrder.clearSave();
 
 
+
         CategoryAdapterNewOrder categoryAdapter = new CategoryAdapterNewOrder(getContext(),R.layout.square_category,new SaveManager<Category>(getContext(),"categories",Category.class),grid,currentOrder);
         categoryList.setAdapter(categoryAdapter);
+
+
+        ExtendedFloatingActionButton fab = (ExtendedFloatingActionButton) rootView.findViewById(R.id.submitButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                View submitView = LayoutInflater.from(getContext()).inflate(R.layout.submit_order,null);
+
+                OrderAdapter orderAdapter = new OrderAdapter(getContext(),R.layout.order_item,currentOrder.getSaveablyById(1).getOrderElementsList());
+                ((ListView) submitView.findViewById(R.id.order_element_list)).setAdapter(orderAdapter);
+                ((TextView) submitView.findViewById(R.id.total)).setText(orderAdapter.getTotal());
+                AlertDialog submitDialog = new MaterialAlertDialogBuilder(getContext(), R.style.MyRounded_MaterialComponents_MaterialAlertDialog)
+                        .setTitle("Finalize your Order!")
+                        .setView(submitView)
+                        .setNeutralButton("Finalize", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                boolean enoughOfAll = true;
+
+                                    for(Order.OrderElement orderElement:currentOrder.getSaveablyById(1).getOrderElementsList()){
+                                        if(orderElement.getItem().ismHasEqualSizedPortions()){
+                                            Item toEdit = orderElement.getItem();
+
+                                            if (!(toEdit.getmPortionSize()*orderElement.getCount()>toEdit.getmQuantity())){
+                                                toEdit.setmQuantity(toEdit.getmQuantity()-toEdit.getmPortionSize()*orderElement.getCount());
+                                                new SaveManager<Item>(getContext(),toEdit.getmCategory(),Item.class).editSaveable(
+                                                        toEdit.mId,toEdit);
+                                            }
+
+                                        }
+                                    }
+                                }
+                        }).create();
+                submitDialog.show();
+            }
+        });
+
         return rootView;
     }
 }
